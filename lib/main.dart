@@ -1,37 +1,89 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(
+void main() => runApp(listaTransferencia());
+
+class listaTransferencia extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       home: Scaffold(
-        body: ListaTransferencias(),
+        body: FormularioTransferencia(),
+      ),
+    );
+  }
+}
+
+class FormularioTransferencia extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Transferências',
+            'Criando Transferência',
           ),
-          backgroundColor: Colors.amber,
+          backgroundColor: Colors.deepPurpleAccent,
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
-        ),
-      ),
-    ));
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                style: TextStyle(fontSize: 24.0),
+                decoration: InputDecoration(
+                  labelText: 'Número da conta',
+                  hintText: '0000',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ),Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                style: TextStyle(fontSize: 24.0),
+                decoration: InputDecoration(
+                  icon: Icon(Icons.monetization_on),
+                  labelText: 'Valor',
+                  hintText: '0.00',
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  print("Botão pressionado!");
+                },
+                child: Text("Confirmar"))
+          ],
+        ));
+  }
+}
 
 class ListaTransferencias extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: [
-        ItemTransferencia(Transferencia(100.00, 1000)),
-        ItemTransferencia(Transferencia(200.00, 1001)),
-        ItemTransferencia(Transferencia(350.00, 2000)),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Transferências',
+        ),
+        backgroundColor: Colors.amber,
+      ),
+      body: Column(
+        children: [
+          ItemTransferencia(Transferencia(100.00, 1000)),
+          ItemTransferencia(Transferencia(200.00, 1001)),
+          ItemTransferencia(Transferencia(350.00, 2000)),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
 
 class ItemTransferencia extends StatelessWidget {
-
   final Transferencia _transferencia;
 
   ItemTransferencia(this._transferencia);
@@ -41,11 +93,10 @@ class ItemTransferencia extends StatelessWidget {
     // TODO: implement build
     return Card(
         child: ListTile(
-          leading: Icon(Icons.monetization_on),
-          title: Text(_transferencia.valor.toString()),
-          subtitle: Text(_transferencia.numeroConta.toString()),
-        )
-    );
+      leading: Icon(Icons.monetization_on),
+      title: Text(_transferencia.valor.toString()),
+      subtitle: Text(_transferencia.numeroConta.toString()),
+    ));
   }
 }
 
