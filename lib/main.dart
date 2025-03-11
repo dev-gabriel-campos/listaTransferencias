@@ -15,7 +15,7 @@ class BytebankApp extends StatelessWidget {
 
 class FormularioTransferencia extends StatelessWidget {
   final TextEditingController _controladorCampoNumeroConta =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _controladorCampoValor = TextEditingController();
 
   @override
@@ -30,15 +30,15 @@ class FormularioTransferencia extends StatelessWidget {
       body: Column(
         children: [
           Editor(
-            controlador: _controladorCampoNumeroConta,
-            dica: '0000',
-            rotulo: 'Número da conta'
+              controlador: _controladorCampoNumeroConta,
+              dica: '0000',
+              rotulo: 'Número da conta'
           ),
           Editor(
-            controlador: _controladorCampoValor,
-            dica: '0.00',
-            rotulo: 'Valor',
-            icone: Icons.monetization_on
+              controlador: _controladorCampoValor,
+              dica: '0.00',
+              rotulo: 'Valor',
+              icone: Icons.monetization_on
           ),
           ElevatedButton(
             onPressed: () {
@@ -53,9 +53,9 @@ class FormularioTransferencia extends StatelessWidget {
 
   void _criaTransferencia(BuildContext context) {
     final int? numeroConta =
-        int.tryParse(_controladorCampoNumeroConta.text);
+    int.tryParse(_controladorCampoNumeroConta.text);
     final double? valor =
-        double.tryParse(_controladorCampoValor.text);
+    double.tryParse(_controladorCampoValor.text);
     if (numeroConta != null && valor != null) {
       final transferenciaCriada = Transferencia(valor, numeroConta);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -102,36 +102,48 @@ class Editor extends StatelessWidget {
 
 
 
-class ListaTransferencias extends StatelessWidget {
+class ListaTransferencias extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return ListaTransferenciasState();
+  }
+}
+
+class ListaTransferenciasState extends State<ListaTransferencias> {
+  final List<Transferencia> _transferencias = [];
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Transferências',
-        ),
+        title: const Text('Transferências'),
         backgroundColor: Colors.amber,
       ),
-      body: Column(
-        children: [
-          ItemTransferencia(Transferencia(100.00, 1000)),
-          ItemTransferencia(Transferencia(200.00, 1001)),
-          ItemTransferencia(Transferencia(350.00, 2000)),
-        ],
+      body: ListView.builder(
+        itemCount: _transferencias.length,
+        itemBuilder: (context, indice) {
+          final transferencia = _transferencias[indice];
+          return ItemTransferencia(transferencia);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          final Future future = Navigator.push(
-              context, MaterialPageRoute(builder: (contextt) {
-            return FormularioTransferencia();
-          }));
+          final Future<Transferencia?> future = Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return FormularioTransferencia();
+            }),
+          );
+
           future.then((transferenciaRecebida) {
-            debugPrint('chegou no then do future');
-            debugPrint('$transferenciaRecebida');
+            if (transferenciaRecebida != null) {
+              setState(() {
+                _transferencias.add(transferenciaRecebida);
+              });
+            }
           });
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -147,10 +159,10 @@ class ItemTransferencia extends StatelessWidget {
     // TODO: implement build
     return Card(
         child: ListTile(
-      leading: Icon(Icons.monetization_on),
-      title: Text(_transferencia.valor.toString()),
-      subtitle: Text(_transferencia.numeroConta.toString()),
-    ));
+          leading: Icon(Icons.monetization_on),
+          title: Text(_transferencia.valor.toString()),
+          subtitle: Text(_transferencia.numeroConta.toString()),
+        ));
   }
 }
 
