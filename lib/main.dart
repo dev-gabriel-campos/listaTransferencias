@@ -6,9 +6,25 @@ class BytebankApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: ListaTransferencias(),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.green.shade900,
+        ).copyWith(
+          secondary: Colors.blue.shade900,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue[900],
+            foregroundColor: Colors.white,
+          ),
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.green.shade900, // Cor do AppBar
+          foregroundColor: Colors.white, // Cor do texto do AppBar
+        ),
       ),
+      home: ListaTransferencias(),
     );
   }
 }
@@ -32,9 +48,8 @@ class FormularioTransferenciaState extends State<FormularioTransferencia>{
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Criando Transferência',
+          'Criando Transferência'
         ),
-        backgroundColor: Colors.deepPurpleAccent,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -70,10 +85,8 @@ class FormularioTransferenciaState extends State<FormularioTransferencia>{
     if (numeroConta != null && valor != null) {
       final transferenciaCriada = Transferencia(valor, numeroConta);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Transferência criada: $transferenciaCriada"),),
+        SnackBar(content: Text("Transferência criada: $transferenciaCriada")),
       );
-      debugPrint('Criando transferência');
-      debugPrint('$transferenciaCriada');
       Navigator.pop(context, transferenciaCriada);
     }
   }
@@ -132,7 +145,7 @@ class ListaTransferenciasState extends State<ListaTransferencias> {
         title: Text(
           'Transferências',
         ),
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.green[900],
       ),
       body: ListView.builder(
         itemCount: widget._transferencias.length,
